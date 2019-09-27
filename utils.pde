@@ -20,20 +20,43 @@ float max(Table table, String prop) {
   return maxVal;
 }
 
-void setupVideoMapping()
+
+//void setupVideoMapping()
+//{
+//  syphonServer = new SyphonServer(this, "Processing Syphon");
+
+//  videoMapperAddress = new NetAddress("127.0.0.1", videoMapperPort);
+
+//  OscMessage videoMapperMessage = new OscMessage("/SwitchSyphonClient");
+//  videoMapperMessage.add(sketchName); //It must contain the same name as the Sketch
+//  videoMapperMessage.add("Processing Syphon");
+//  videoMapperMessage.add(1.0);
+
+//  oscCom = new OscP5(this, trackerReceivePort);
+//  oscP5.send(videoMapperMessage, videoMapperAddress);
+//}
+
+// OSC Communication
+void 
+  setupCommunication()
 {
-  syphonServer = new SyphonServer(this, "Processing Syphon");
-
-  videoMapperAddress = new NetAddress("127.0.0.1", videoMapperPort);
-
-  OscMessage videoMapperMessage = new OscMessage("/SwitchSyphonClient");
-  videoMapperMessage.add(sketchName); //It must contain the same name as the Sketch
-  videoMapperMessage.add("Processing Syphon");
-  videoMapperMessage.add(1.0);
-  
-  oscP5 = new OscP5(this, trackerReceivePort);
-  oscP5.send(videoMapperMessage, videoMapperAddress);
+  oscCom = new OscP5(this, oscReceivePort);
 }
+
+//void oscEvent(OscMessage oscMessage) 
+//{ 
+//  String oscAddress = oscMessage.addrPattern();
+
+//  if( oscAddress.equals("/tuio/2Dcur") )
+//  {
+//     trackingControl.update(oscMessage);
+
+//     if(trackingControl.updated == true)
+//     {
+//       updateContent(trackingControl.touchPoints);
+//     }
+//   }
+//}
 
 
 //async function loadData(file){
