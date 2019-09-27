@@ -14,11 +14,6 @@ String sketchName = "temperature";
 int oscReceivePort = 12000;
 int trackingMode = 0;
 OscP5 oscCom;
-//final int videoMapperPort = 8400;
-//final int trackerMasterPort = 64000;
-//final int trackerReceivePort = 12000;
-//NetAddress videoMapperAddress;
-//NetAddress trackerMasterAddress;
 
 //graphics 
 //SyphonServer syphonServer;
