@@ -1,5 +1,5 @@
-//test commit
-import codeanticode.syphon.*;
+//import codeanticode.syphon.*;
+import spout.*;
 import oscP5.*;
 import netP5.*;
 
@@ -11,20 +11,19 @@ int currentIndex = 0;
 
 // communication with touch tracker and video mapper 
 String sketchName = "temperature";
-OscP5 oscP5;
-final int videoMapperPort = 8400;
-final int trackerMasterPort = 64000;
-final int trackerReceivePort = 12000;
-NetAddress videoMapperAddress;
-NetAddress trackerMasterAddress;
+int oscReceivePort = 12000;
+int trackingMode = 0;
+OscP5 oscCom;
+//final int videoMapperPort = 8400;
+//final int trackerMasterPort = 64000;
+//final int trackerReceivePort = 12000;
+//NetAddress videoMapperAddress;
+//NetAddress trackerMasterAddress;
 
 //graphics 
-SyphonServer syphonServer;
+//SyphonServer syphonServer;
 PGraphics canvas;
 PGraphics attLayer;
-int canvasW = 4*1920;
-int canvasH = 1080;
-
 
 
 
@@ -36,19 +35,21 @@ void settings()
 
 void setup () {
 
-  frameRate(10);
+  frameRate(30);
   canvas = createGraphics(canvasW, canvasH, P3D);
- // setupTracking();
-  setupVideoMapping();  
-  
+  setupCommunication();
+
+  setupVideoMapping();
+
+  // setupTracking();
+  // setupVideoMapping();  
+
   data = loadTable("temperatur_ch.csv", "header");
 
-  minTemp = min(data,"jan");
-  maxTemp = max(data,"jan");
+  minTemp = min(data, "jan");
+  maxTemp = max(data, "jan");
   println("minTemp: " + minTemp);
   println("maxTemp: " + maxTemp);
-
-  
 }
 
 void draw () {
@@ -62,7 +63,7 @@ void draw () {
   float w = canvas.width / data.getRowCount();
   float x = 0;
 
-  
+
   canvas.colorMode(RGB); 
 
   //colors cannot be used like this '#FFC200';
@@ -71,7 +72,7 @@ void draw () {
   color to = color(255, 75, 0);
 
   for (int i = 0; i < currentIndex; i++) {
-    float d = data.getInt(i,"jan");
+    float d = data.getInt(i, "jan");
     x = i * w;
     float amt = map(d, minTemp, maxTemp, 0, 1);
     canvas.colorMode(RGB);
@@ -80,10 +81,10 @@ void draw () {
     canvas.noStroke();
     canvas.rect(x, 0, w, canvas.height);
   }
-  
-  canvas.endDraw();
-  syphonServer.sendImage(canvas);
-  
-  image(canvas, 0, 0, width, height);
 
+  canvas.endDraw();
+  //syphonServer.sendImage(canvas);
+  mappingControl.update(canvas);
+
+  image(canvas, 0, 0, width, height);
 }
